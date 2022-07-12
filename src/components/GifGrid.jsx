@@ -1,22 +1,27 @@
-import React from 'react'
 
-// const ApiKey= 'NO6SeM0Wp0Pq73lMl7XrkoOW8HPlcLRn'
+import { GitItem } from './GitItem';
+import { useFetchGifs } from '../Hooks/useFetchGifs';
+
+
+
 
 export const GifGrid = ({category}) => {
- const getGif = async () =>{
-    const url =`http//:api.giphy.com/v1/gifs/search?api_key=NO6SeM0Wp0Pq73lMl7XrkoOW8HPlcLRn&q=${category}&limit=20`;
-    const resp = await fetch (url);
-    const {data} = await resp.json();
-    
 
-    console.log(data);
- }
+const {images, isLoading} = useFetchGifs(category);
 
- getGif();
 
   return (
     <>
         <h3>{category}</h3>
-    </>
-  )
+        {
+            isLoading  && (<h2>Cargando... </h2>)
+        }
+        <div className='card-grid '>
+         {
+          images.map((image)=>(
+            <GitItem key={image.id} {... image}/> 
+          ))
+         }
+        </div>
+    </> )     
 }
